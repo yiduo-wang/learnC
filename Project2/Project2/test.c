@@ -42,19 +42,4 @@ int main()
 	}
 	system("pause");
 }
-//判断1000年----2000年之间的闰年
-//规律：能被4整除但不能被100整除
-#include<stdio.h>
-#include<stdlib.h>
-int main()
-{
-	for (int a = 1000; a <= 2000; a++)
-	if (a % 4 == 0)
-	{
-		if (a % 100 != 0)
-		{
-			printf("%d\t", a);
-		}
-	}
-	system("pause");
-}
+
