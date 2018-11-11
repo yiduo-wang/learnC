@@ -72,18 +72,18 @@ int Binarysearch(int* arr, int to_find, int left, int right)
 //}
 
 int main()
-{
-	int i = 0, num=0;
-	for (; i < 10; i++)
-	{
-		Founc(num);
-		printf("%d",num);
-	}
+//{
+//	int i = 0, num=0;
+//	for (; i < 10; i++)
+//	{
+//		Founc(num);
+//		printf("%d",num);
+//	}
 
-	//int arr[] = { 1, 2, 3, 4, 5, 6 ,7,8,9};
-	//int left = 0;
-	//int right = (sizeof(arr) / sizeof(arr[0]))-1;
-	//printf("%d\n", Binarysearch(arr, 2, left, right));
+	int arr[] = { 1, 2, 3, 4, 5, 6 ,7,8,9};
+	int left = 0;
+	int right = (sizeof(arr) / sizeof(arr[0]))-1;
+	printf("%d\n", Binarysearch(arr, 2, left, right));
 
 
 	//int i = 1000;
