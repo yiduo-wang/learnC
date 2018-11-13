@@ -72,17 +72,17 @@ int main()
 	//}
 	//printf("%d\n", count);
 
-	//int i = 1; 
-	//double  sum = 0,sum1=0,sum2=0;
-	//for (; i <= 100; i++)
-	//{
-	//	if (i % 2 == 0)
-	//		sum1 +=- (double)1 / (double)i;
-	//	else
-	//		sum2 +=(double) 1 / (double)i;
-	//}
-	//sum = sum1 + sum2;
-	//printf("%f", sum);
+	int i = 1; 
+	double  sum = 0,sum1=0,sum2=0;
+	for (; i <= 100; i++)
+	{
+		if (i % 2 == 0)
+			sum1 +=- (double)1 / (double)i;
+		else
+			sum2 +=(double) 1 / (double)i;
+	}
+	sum = sum1 + sum2;
+	printf("%f", sum);
 
 	
 	//int arr1[] = { 1, 2, 3, 4 };
