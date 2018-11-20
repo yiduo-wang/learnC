@@ -21,16 +21,16 @@ int Menu()
 	return choice;
 }
 
-void Init(char show_map[ROW+2][COL+2],char mine_map[ROW+2][COL+2])
+void Init(char g_show_map[ROW+2][COL+2],char g_mine_map[ROW+2][COL+2])
 {
 	for (int row = 0; row <ROW+2; row++)
 	{
-		for (int col = 1; col <= COL+2; col++)
+		for (int col = 0; col < COL+2; col++)
 			g_show_map[row][col] = '*';
 	}
-	for (int row = 1; row <= ROW+2; row++)
+	for (int row = 0; row <ROW+2; row++)
 	{
-		for (int col = 1; col <= COL+2; col++)
+		for (int col = 0; col < COL+2; col++)
 			g_mine_map[row][col] = '0';
 	}
 	int mine_count = DEFAULT_MINE_COUNT;
@@ -38,8 +38,9 @@ void Init(char show_map[ROW+2][COL+2],char mine_map[ROW+2][COL+2])
 	{
 		int row = rand() % 10 + 1;
 		int col = rand() % 10 + 1;
-		if (g_mine_map[row][col] == 'M')
+		if (g_mine_map[row][col] == '1')
 			continue;
+		g_mine_map[row][col] = '1';
 		--mine_count;
 	}
 
@@ -51,38 +52,59 @@ void Displaymap(char map[ROW+2][COL+2])
 	for (int i = 1; i <= COL; ++i)
 		printf("%d ", i);
 	printf("\n");
-	printf("   -------------------\n");
+	printf("   ---------------------\n");
 	printf("\n");
 	for (int row = 1; row <= ROW; ++row)
 	{
-		printf("%2d| ");
+		printf("%2d| ",row);
 		for (int col = 1; col <= COL; ++col)
 			printf("%c ",map[row][col]);
+		printf("\n");
 	}
+}
+
+void Updatemap(char g_show_map[ROW + 2][COL + 2], char g_mine_map[ROW + 2][COL + 2], int row, int col)
+{
+	int mine_cnt = (g_mine_map[row - 1][col - 1] - '0') + (g_mine_map[row - 1][col] - '0')
+		+ (g_mine_map[row][col - 1] - '0') + (g_mine_map[row][col + 1]-'0')
+		+ (g_mine_map[row + 1][col - 1] - '0') + (g_mine_map[row + 1][col] - '0')
+		+ (g_mine_map[row + 1][col + 1] - '0') + (g_mine_map[row - 1][col + 1] - '0');
+	g_show_map[row][col] = '0'+ mine_cnt;
+
 }
 
 void Game()
 {
+	int blank_cnt = 0;
 	srand((unsigned)time(0));
 	Init(g_show_map,g_mine_map);
 	Displaymap(g_show_map);
-	printf("请输入要掀开位置的坐标：\n");
 	while (1)
 	{
 		int row = 0, col = 0;
+		printf("请输入要掀开位置的坐标：\n");
 		scanf("%d %d", &row, &col);
-		if ("row<=0||row>ROW||col<=0||col>COL")
+		if (row<=0||row>ROW||col<=0||col>COL)
 		{
-			printf("输入错误，请重新输入坐标：");
+			printf("输入错误，请重新输入坐标：\n");
 			continue;
 		}
-		if (g_mine_map[row][col] == 'M')
+		if (g_mine_map[row][col] == '1')
 		{
-			Display(g_mine_map);
+			Displaymap(g_mine_map);
 			printf("踩雷了，游戏结束\n");
 			break;
 		}
-
+		++blank_cnt;
+		if (blank_cnt == ROW*COL - DEFAULT_MINE_COUNT)
+		{
+			Displaymap(g_mine_map);
+			printf("扫雷成功，玩家胜利\n");
+			break;
+		}
+		Updatemap(g_show_map,g_mine_map,row,col);
+		Displaymap(g_show_map);
+		printf("\n");
 	}
 
 }
