@@ -30,7 +30,7 @@ int main()
 	//printf("%d\n", strlen(*a));//未定义行为     找不到\0,数组越界
 	//printf("%d\n", strlen(a[1]));//未定义行为   找不到\0,数组越界
 	//printf("%d\n", strlen(&a));//未定义行为     找不到\0,数组越界
-	
+
 	//char* p = "abcdef";
 	//printf("%d\n", sizeof(p));//4         p为指针，求指针大小
 	//printf("%d\n", sizeof(p+1));//4       p+1为指针
@@ -59,7 +59,7 @@ int main()
 	//printf("%d\n", strlen(a[1]));//未定义行为    字符b无法计算strlen
 	//printf("%d\n", strlen(&a));//6          数组a的实际长度 
 	//printf("%d\n", strlen(&a+1));//未定义行为   数组越界了
-    //printf("%d\n", strlen(&a[0]+1));//5       字符b以后的实际长度  
+	//printf("%d\n", strlen(&a[0]+1));//5       字符b以后的实际长度  
 
 	int a[3][4] = { 0 };
 	//printf("%d\n", sizeof(a));//48       4*4*3 4*4为第一行所占的字节，在*3是指三行总共占的字节
@@ -113,8 +113,8 @@ int main()
 	//int num = 10;
 	//int* p = &num;
 	//if (p == NULL)//空指针，无效指针代表，如果不为空，
-		          //不能确定是否有效，但是为空，则肯定无效
-	
+				  //不能确定是否有效，但是为空，则肯定无效
+
 	//char arr[] = "hehe";
 	//char arr1[] = "hehe";
 
