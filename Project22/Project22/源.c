@@ -49,12 +49,37 @@ int Digitsum(int x)
 	}
 }
 
+int  Strlen(char* arr)//µİ¹é
+{
+	if (*arr)
+	{
+		char* start = arr;
+		return 1 + Strlen(start + 1);
+	}
+	else
+		return 0;
+}
+
+//int Strlen(char* arr)//·Çµİ¹é
+//{
+//	int count = 0;
+//	char* start = arr;
+//	if (*start == '\0')
+//		return 0;
+//	while (*start)
+//	{
+//		++count; 
+//		start++;
+//	}
+//	return count;
+//}
+
 void Reverse(char* arr)
 {
 	if (*arr)
 	{
 		char* start = arr;
-		char* end = arr + strlen(arr) - 1;
+		char* end = arr + Strlen(arr) - 1;
 		char tmp = *start;
 		*start = *end;
 		*end = '\0';
@@ -63,11 +88,39 @@ void Reverse(char* arr)
 	}
 }
 
+//int Factorial(int n)//µİ¹é
+//{
+//	if (n == 1)
+//		return 1;
+//	return n * Factorial(n - 1);
+//}
+
+void Print(int x)
+{
+	if (x>9)
+		Print(x/10);
+	printf("%d\n",x%10);
+}
+
 int main()
 {
-	char arr[] = "abcdef";
-	Reverse(arr);
-	printf("%s\t",arr);
+	
+	int n = 12345;
+	Print(n);
+
+	//int n = 5;
+	//int num = 1;
+	//for (; n > 0; --n)
+	//	num *= n;
+	//printf("%d\n",num);
+
+	//char arr[] = "abcdef";
+	//if (Strlen(arr))
+	//	printf("%d\n", Strlen(arr));
+
+	//char arr[] = "abcdef";
+	//Reverse(arr);
+	//printf("%s\t",arr);
 	
 
 	//int num = 1729;
