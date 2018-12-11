@@ -25,11 +25,50 @@ int reverse_bit1(unsigned int value)
 	return tmp;
 }
 
+int M_Avg(int x, int y)
+{
+	if (x > y)
+		return y + (x - y) / 2;
+	if (x < y)
+		return x + (y - x) / 2;
+}
+
+int M_Avg1(int x, int y)
+{
+	return(x & y) + ((x^y) >> 1);
+}
+
+
+int Diff(int arr[],int size)
+{
+	int start = arr[0];
+	int i = 0;
+	for (i = 1; i < size; ++i)
+		start ^= arr[i];
+	return start;
+}
+
 int main()
 {
-	int value = 0;
-	printf("请输入一个数字：\n");
-	scanf("%d", &value);
-	printf("%u\n",reverse_bit1(value));
+	int arr[] = {0};
+	int i = 0;
+	int size = 5;
+	printf("请输入数组的内容：");
+	for (i = 0; i < size; ++i)
+	{
+		scanf("%d", &arr[i]);
+	}
+
+	printf("%d\n", Diff(arr,size));
+
+	//int a = 10;
+	//int b = 20;
+	//printf("%d\b\n",M_Avg1(a, b));
+
+	//int value = 0;
+	//printf("请输入一个数字：\n");
+	//scanf("%d", &value);
+	//printf("%u\n",reverse_bit1(value));
 	system("pause");
 }
+
