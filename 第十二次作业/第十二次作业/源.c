@@ -48,18 +48,69 @@ int Diff(int arr[],int size)
 	return start;
 }
 
+int Strlen(char* str)
+{
+	char*start = str;
+	int count = 0;
+	while (*start)
+	{
+		++start;
+		++count;
+	}
+	return count;
+}
+
+void reverse(char* start, char* end)
+{
+	while (start < end)
+	{
+		char tmp = *start;
+		*start = *end;
+		*end = tmp;
+		++start;
+		--end;
+	}
+}
+
+void Reverse(char* str)
+{
+	char* start = str;
+	char* end = str + Strlen(str) - 1 ;
+	char* cur = str;
+	//整体逆转
+	reverse(start, end);
+	//逆转子串
+	while (*cur)
+	{
+		char*st = cur;
+		while (*cur != ' '&&*cur != '\0')
+			++cur;
+		reverse(st, cur-1);
+		if (*cur == ' ')
+			++cur;
+	}
+}
+
 int main()
 {
-	int arr[] = {0};
-	int i = 0;
-	int size = 5;
-	printf("请输入数组的内容：");
-	for (i = 0; i < size; ++i)
-	{
-		scanf("%d", &arr[i]);
-	}
+	
+	char str[1024];
+	printf("请输入字符串:\n");
+	//scanf("%s",&str);当遇到空格时,用scanf输出的字符串会将其看为\0
+	gets(str);
+	Reverse(str);
+	printf("%s\n", str);
 
-	printf("%d\n", Diff(arr,size));
+	//int arr[] = {0};
+	//int i = 0;
+	//int size = 5;
+	//printf("请输入数组的内容：");
+	//for (i = 0; i < size; ++i)
+	//{
+	//	scanf("%d", &arr[i]);
+	//}
+
+	//printf("%d\n", Diff(arr,size));
 
 	//int a = 10;
 	//int b = 20;
