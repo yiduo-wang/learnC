@@ -51,14 +51,14 @@ void Reverse_Odd_Even_Num(int* arr, int size)
 int Have(int x,int arr[ROW][COL])
 {
 	int r = 0, c = COL - 1;
-	int tmp =& arr[r][c];
+	int tmp = arr[r][c];
 	while (1)
 	{
 		if (x == tmp)
 			return 1;
-		else if (x < tmp && r >= 0)
+		else if (x < tmp && c > 0)
 			tmp = arr[r][--c];
-		else if (x > tmp && r <=(ROW-1))
+		else if (x > tmp && r <(ROW-1))
 			tmp = arr[++r][c];
 		else
 			return 0;
