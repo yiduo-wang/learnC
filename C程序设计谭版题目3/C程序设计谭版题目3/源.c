@@ -185,6 +185,7 @@ int main()
 }
 
 //25.求一个3X3的整形矩阵对角线之和
+#define _CRT_SECURE_NO_WARNINGS
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
