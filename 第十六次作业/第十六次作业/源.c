@@ -271,8 +271,14 @@ void* Memmove(void* destination, void* source, size_t size)
 
 int main()
 {
-	char str[] = "memmove can be very useful......";
-	Memmove(str+20, str+15, 11);
-	puts(str+20);
+	//char str[] = "memmove can be very useful......";
+	//Memmove(str+20, str+15, 11);
+	//puts(str+20);
+		char a[5] = { 'A','B','C','D' };
+		char(*p3)[3] = &a;
+		char(*p4)[3] = a;
+		printf("%c\n", p3 + 1);
+		printf("%c\n", p4 + 1);
+		return 0;
 	system("pause");
 }
