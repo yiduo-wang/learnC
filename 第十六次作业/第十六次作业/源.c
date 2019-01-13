@@ -215,3 +215,64 @@ int main()
 	}
 	system("pause");
 }
+
+//实现memcpy
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+
+void* Memcpy(void* destination, void* source, size_t size)
+{
+	int i = 0;
+	char* pdest = (char*)destination;
+	char* psrc = (char*)source;
+	for (i = 0; i < size; ++i)
+		pdest[i] = psrc[i];
+	return destination;
+}
+
+int main()
+{
+	int arr1[] = { 1,2,3,4 };
+	int arr2[20];
+	int size = sizeof(arr1);
+	Memcpy(arr2,arr1,size);
+	for (int i = 0; i < size / sizeof(arr1[0]); ++i)
+		printf("%d ", arr2[i]);
+	printf("\n");
+	system("pause"); 
+}
+
+//实现memmove
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<assert.h>
+#include<stdint.h>
+
+void* Memmove(void* destination, void* source, size_t size)
+{
+	int64_t i = 0;
+	assert(destination != NULL);
+	assert(source != NULL);
+	char* pdest = (char*)destination;
+	char* psrc = (char*)source;
+	if (pdest > psrc && pdest < psrc + size)
+	{
+		for (i = size - 1; i >= 0; --i)
+			pdest[i] = psrc[i];
+	}
+	else
+	{
+		for (i = 0; i < size; ++i)
+			pdest[i] = psrc[i];
+	}
+}
+
+int main()
+{
+	char str[] = "memmove can be very useful......";
+	Memmove(str+20, str+15, 11);
+	puts(str+20);
+	system("pause");
+}
