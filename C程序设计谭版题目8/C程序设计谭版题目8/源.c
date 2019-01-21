@@ -173,13 +173,16 @@ void GetMemory(char** p,int num)
 
 int main()
 {
-	char* str = (char*)malloc(100);
-	strcpy(str, "hello");
-	free(str);
-	if (str != NULL)
+	FILE* pfile = fopen("ÎÄ¼þ²Ù×÷.txt", "r");
+	char ch = 0;
+	if (pfile = NULL)
 	{
-		strcpy(str, "world");
-		printf("%s\n", str);
+		perror("fopen");
+		exit(EXIT_FAILURE);
 	}
+	ch = fgetc(pfile);
+	printf("%c\n", ch);
+	fclose(pfile);
+	pfile = NULL;
 	system("pause");
 }
