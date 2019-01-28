@@ -90,7 +90,24 @@ void DelPersonInfo(AddressBook* addr_book)
 
 void FindPersonInfo(AddressBook* addr_book)
 {
-
+	assert(addr_book != NULL);
+	printf("开始进行查找\n");
+	printf("请输入要查找的姓名\n");
+	char name[100] = { 0 };
+	scanf("%s", name);
+	int count = 0;
+	int i = 1;
+	for (i = 1; i <= addr_book->size; ++i)
+	{
+		PersonInfo* p = &addr_book->infos[i-1];
+		if (strcmp(name, p->name) == 0)
+		{
+			printf("[%d] %s\t%s\t%s\t%s\t%s\n", i,
+				p->name, p->age, p->sex, p->phone, p->address);
+			++count;
+		}
+	}
+	printf("查找完毕,共查找到%d条数据\n",count);
 }
 
 void ModfiyPersonInfo(AddressBook* addr_book)
@@ -145,22 +162,78 @@ void PrintAllPersonInfo(AddressBook* addr_book)
 
 void ClearAllPersonInfo(AddressBook* addr_book)
 {
-
+	assert(addr_book != NULL);
+	printf("清空所有记录\n");
+	printf("您确认要清空所有记录吗?输入\"Y\"表示确认\n");
+	char cmd[4] = { 0 };
+	scanf("%s", cmd);
+	if (strcmp(cmd, "Y") != 0)
+	{
+		printf("清空操作取消\n");
+		return;
+	}
+	addr_book->size = 0;
+	printf("清空操作成功\n");
 }
 
 void SortAllPersonInfo(AddressBook* addr_book)
 {
-
+	assert(addr_book != NULL);
+	int i = 0,j=0;
+	for (i = 0; i < addr_book->size; ++i)
+	{
+		for (j = addr_book->size - 1; j > i; --j)
+		{
+			if (strcmp(addr_book->infos[j].name, addr_book->infos[j - 1].name) < 0)
+			{
+				PersonInfo tmp = addr_book->infos[j];
+				addr_book->infos[j] = addr_book->infos[j - 1];
+				addr_book->infos[j - 1] = tmp;
+			}
+			//这里不能再传址因为传址后,临时变量会随着原本的变量改变,这里只能传值
+		}
+	}
+	printf("排序完成\n");
+	PrintAllPersonInfo(addr_book);
 }
 
 void SaveAllPersonInfo(AddressBook* addr_book)
 {
+	assert(addr_book != NULL);
+	FILE* pf = fopen("通讯录.txt", "w");
+	if (pf == NULL)
+	{
+		perror("fopen");
+		exit(EXIT_FAILURE);
+	}
+	for (int i = 0; i < addr_book->size; ++i)
+	{
+		fwrite(addr_book->infos+i, sizeof(PersonInfo), 1, pf);
+		printf("保存成功\n");
+	}
+	fclose(pf);
+	pf = NULL;
 
 }
 
 void LoadAllPersonInfo(AddressBook* addr_book)
 {
-
+	assert(addr_book != NULL);
+	PersonInfo tmp;
+	FILE* pr = fopen("通讯录.txt", "r");
+	if (pr == NULL)
+	{
+		perror("fread");
+		exit(EXIT_FAILURE);
+	}
+	while (fread(&tmp, sizeof(PersonInfo), 1, pr))
+	{
+		addr_book->infos[addr_book->size] = tmp;
+		++addr_book->size;
+	}
+	printf("加载联系人内容成功\n");
+	fclose(pr);
+	pr = NULL;
 }
 
 int Menu()
