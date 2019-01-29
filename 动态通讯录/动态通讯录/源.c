@@ -4,8 +4,6 @@
 #include<assert.h>
 #include<string.h>
 
-#define PERSON_INTO_MAX_SIZE 200
-
 typedef struct PersonInfo//联系人的信息
 {
 	char name[100];
@@ -17,8 +15,9 @@ typedef struct PersonInfo//联系人的信息
 
 typedef struct AddressBook//通讯录
 {
-	PersonInfo infos[PERSON_INTO_MAX_SIZE];
+	PersonInfo *infos;
 	int size;//[0,size)范围是有效的空间
+	int capacity;//容量,infos的元素个数
 }AddressBook;
 
 AddressBook g_address_book;
@@ -29,15 +28,32 @@ void Init(AddressBook* addr_book)
 	addr_book->size = 0;
 	//size控制了结构体数组中的有效元素的区间范围,只要设为0,
 	//无论数组中存在了什么都是没有意义的,所以就不需要在给数组进行初始化
+	addr_book->capacity = 1;
+	addr_book->infos = (PersonInfo*)malloc
+	(sizeof(PersonInfo)*addr_book->capacity);
+}
+
+void Realloc(AddressBook* addr_book)
+{
+	assert(addr_book != NULL);
+	addr_book->capacity += 1;
+	//扩大容量
+	PersonInfo* old_infos = addr_book->infos;
+	addr_book->infos = (PersonInfo*)malloc
+	(addr_book->capacity * sizeof(PersonInfo));
+	for (int i = 0; i < addr_book->size; ++i)
+		addr_book->infos[i] = old_infos[i];
+	free(old_infos);
 }
 
 void AddPersonInfo(AddressBook* addr_book)
 {
 	assert(addr_book != NULL);
 	printf("插入一个联系人\n");
-	if (addr_book->size >= PERSON_INTO_MAX_SIZE)
+	if (addr_book->size >= addr_book->capacity)
 	{
-		printf("当前通讯录已满,插入失败");
+		printf("当前通讯录已满,进行扩容\n");
+		Realloc(addr_book);//也可以用realloc(addr_book->infos, sizeof(PersonInfo));
 	}
 	//每次把这个新的联系人放到有效数组的最后一个元素
 	PersonInfo* p = &addr_book->infos[addr_book->size];
@@ -70,7 +86,7 @@ void DelPersonInfo(AddressBook* addr_book)
 		printf("您输入的有误!删除失败\n");
 		return;
 	}
-	PersonInfo* p = &addr_book->infos[id-1];
+	PersonInfo* p = &addr_book->infos[id - 1];
 	printf("您要删除的联系人为[%d] %s\t%s\t%s\t%s\t%s\n",
 		id, p->name, p->sex, p->age, p->phone, p->address);
 	printf("确认请按\"Y\"\n");
@@ -81,7 +97,7 @@ void DelPersonInfo(AddressBook* addr_book)
 		printf("删除操作已取消\n");
 		return;
 	}
-	PersonInfo* from = &addr_book->infos[addr_book->size-1];
+	PersonInfo* from = &addr_book->infos[addr_book->size - 1];
 	PersonInfo* to = p;
 	*to = *from;
 	--addr_book->size;
@@ -99,7 +115,7 @@ void FindPersonInfo(AddressBook* addr_book)
 	int i = 1;
 	for (i = 1; i <= addr_book->size; ++i)
 	{
-		PersonInfo* p = &addr_book->infos[i-1];
+		PersonInfo* p = &addr_book->infos[i - 1];
 		if (strcmp(name, p->name) == 0)
 		{
 			printf("[%d] %s\t%s\t%s\t%s\t%s\n", i,
@@ -107,7 +123,7 @@ void FindPersonInfo(AddressBook* addr_book)
 			++count;
 		}
 	}
-	printf("查找完毕,共查找到%d条数据\n",count);
+	printf("查找完毕,共查找到%d条数据\n", count);
 }
 
 void ModfiyPersonInfo(AddressBook* addr_book)
@@ -122,7 +138,7 @@ void ModfiyPersonInfo(AddressBook* addr_book)
 		printf("您输入的序号错误\n");
 		return;
 	}
-	PersonInfo* p = &addr_book->infos[id-1];
+	PersonInfo* p = &addr_book->infos[id - 1];
 	char input[1024] = { 0 };
 	printf("请输入您要修改的姓名\n");
 	scanf("%s", input);
@@ -153,11 +169,11 @@ void PrintAllPersonInfo(AddressBook* addr_book)
 	printf("显示所有联系人\n");
 	for (int i = 1; i <= addr_book->size; ++i)
 	{
-		PersonInfo* p = &addr_book->infos[i-1];
-		printf("[%d] %s\t%s\t%s\t%s\t%s\n", i,p->name,
-			p->sex,p->age,p->phone,p->address); 
+		PersonInfo* p = &addr_book->infos[i - 1];
+		printf("[%d] %s\t%s\t%s\t%s\t%s\n", i, p->name,
+			p->sex, p->age, p->phone, p->address);
 	}
-	printf("共显示了%d条数据\n",addr_book->size);
+	printf("共显示了%d条数据\n", addr_book->size);
 }
 
 void ClearAllPersonInfo(AddressBook* addr_book)
@@ -179,7 +195,7 @@ void ClearAllPersonInfo(AddressBook* addr_book)
 void SortAllPersonInfo(AddressBook* addr_book)
 {
 	assert(addr_book != NULL);
-	int i = 0,j=0;
+	int i = 0, j = 0;
 	for (i = 0; i < addr_book->size; ++i)
 	{
 		for (j = addr_book->size - 1; j > i; --j)
@@ -207,7 +223,7 @@ void SaveAllPersonInfo(AddressBook* addr_book)
 		exit(EXIT_FAILURE);
 	}
 	for (int i = 0; i < addr_book->size; ++i)
-		fwrite(addr_book->infos+i, sizeof(PersonInfo), 1, pf);
+		fwrite(addr_book->infos + i, sizeof(PersonInfo), 1, pf);
 	printf("保存成功\n");
 	fclose(pf);
 	pf = NULL;
@@ -230,6 +246,7 @@ void LoadAllPersonInfo(AddressBook* addr_book)
 		++addr_book->size;
 	}
 	printf("加载联系人内容成功\n");
+	PrintAllPersonInfo(addr_book);
 	fclose(pr);
 	pr = NULL;
 }
@@ -259,7 +276,7 @@ int main()
 	//1.对通讯录进行初始化
 	Init(&g_address_book);//传址不能传值
 	typedef void(*pfounc_t)(AddressBook*);
-	pfounc_t table[]=
+	pfounc_t table[] =
 	{
 		AddPersonInfo,DelPersonInfo,FindPersonInfo,
 		ModfiyPersonInfo,PrintAllPersonInfo,
@@ -269,7 +286,7 @@ int main()
 	while (1)
 	{
 		int choice = Menu();
-		if (choice < 0 || choice>(int)(sizeof(table)/sizeof(table[0])))
+		if (choice < 0 || choice>(int)(sizeof(table) / sizeof(table[0])))
 		{
 			printf("您输入的有错误,请重新输入:\n");
 			continue;
