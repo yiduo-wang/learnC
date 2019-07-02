@@ -22,7 +22,7 @@ void Odd_Even_Bit(int n)
 	for (i = 30; i >= 0; i -= 2)
 		printf("%d ", (n >> i) & 1);
 	printf("\n");
-	printf("偶数位为： ");
+	printf("偶数位为 ");
 	for (i = 31; i >= 1; i -= 2)
 		printf("%d ", (n >> i) & 1);
 	printf("\n");
